@@ -73,6 +73,59 @@ export class Tree {
     }
   }
 
+  preOrderForEach(callback) {
+    try {
+      if (!callback) throw new Error("callback is required");
+
+      const traverse = () => {
+        if (current === null) return;
+
+        callback(current);
+
+        traverse(current.left);
+        traverse(current.right);
+      };
+      traverse(this.root);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  postOrderForEach(callback) {
+    try {
+      if (!callback) throw new Error("callback is required");
+
+      const traverse = () => {
+        if (current === null) return;
+
+        traverse(current.left);
+        traverse(current.right);
+
+        callback(current);
+      };
+      traverse(this.root);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  inOrderForEach(callback) {
+    try {
+      if (!callback) throw new Error("callback is required");
+
+      const traverse = () => {
+        if (current === null) return;
+
+        traverse(current.left);
+        callback(current);
+        traverse(current.right);
+      };
+      traverse(this.root);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   find(root = this.root, value) {
     if (root === null) {
       return "value not found";
