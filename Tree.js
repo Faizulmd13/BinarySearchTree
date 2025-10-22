@@ -185,6 +185,41 @@ export class Tree {
 
     return recursiveStep(this.root);
   }
+
+  isBalanced() {
+    //height compare between height(node.left) and height(node.right)
+    const self = this;
+    let ongoingBalanceCheck = true;
+    function balanceCheck(current) {
+      if (!ongoingBalanceCheck) return;
+
+      let lHeight = -1;
+      let rHeight = -1;
+      if (current.left) {
+        lHeight = self.height(current.left.data);
+      }
+      if (current.right) {
+        rHeight = self.height(current.right.data);
+      }
+      if (Math.abs(lHeight - rHeight) > 1) {
+        ongoingBalanceCheck = false;
+      }
+    }
+    this.inOrderForEach(balanceCheck);
+    return ongoingBalanceCheck;
+  }
+
+  rebalance() {
+    let dataArray = [];
+    function collectNodeData(current) {
+      dataArray.push(current.data);
+    }
+    this.inOrderForEach(collectNodeData);
+    const newTree = new Tree(dataArray);
+    console.log(dataArray);
+    this.root = newTree.root;
+    return;
+  }
 }
 
 function sortAndRemoveDuplicates(arr) {
