@@ -55,19 +55,12 @@ export class Tree {
       if (!callback) throw new Error("callback is required");
 
       const queue = [this.root];
-
-      const traverse = () => {
-        if (queue.length === 0) return;
-
+      while (queue.length > 0) {
         const current = queue.shift();
-
+        callback(current);
         if (current.left) queue.push(current.left);
         if (current.right) queue.push(current.right);
-
-        callback(current);
-
-        traverse();
-      };
+      }
     } catch (error) {
       console.log(error);
     }
@@ -77,7 +70,7 @@ export class Tree {
     try {
       if (!callback) throw new Error("callback is required");
 
-      const traverse = () => {
+      const traverse = (current) => {
         if (current === null) return;
 
         callback(current);
@@ -95,7 +88,7 @@ export class Tree {
     try {
       if (!callback) throw new Error("callback is required");
 
-      const traverse = () => {
+      const traverse = (current) => {
         if (current === null) return;
 
         traverse(current.left);
@@ -113,7 +106,7 @@ export class Tree {
     try {
       if (!callback) throw new Error("callback is required");
 
-      const traverse = () => {
+      const traverse = (current) => {
         if (current === null) return;
 
         traverse(current.left);
@@ -156,7 +149,7 @@ export class Tree {
   }
 
   depth(value) {
-    const target = this.find(root, value);
+    const target = this.find(this.root, value);
     if (target === "value not found") {
       return null;
     }
@@ -187,7 +180,6 @@ export class Tree {
   }
 
   isBalanced() {
-    //height compare between height(node.left) and height(node.right)
     const self = this;
     let ongoingBalanceCheck = true;
     function balanceCheck(current) {
@@ -196,10 +188,10 @@ export class Tree {
       let lHeight = -1;
       let rHeight = -1;
       if (current.left) {
-        lHeight = self.height(current.left.data);
+        lHeight = self.height(current.left);
       }
       if (current.right) {
-        rHeight = self.height(current.right.data);
+        rHeight = self.height(current.right);
       }
       if (Math.abs(lHeight - rHeight) > 1) {
         ongoingBalanceCheck = false;
