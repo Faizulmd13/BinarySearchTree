@@ -21,5 +21,17 @@ function prettyPrint(node, prefix = "", isLeft = true) {
   }
 }
 
-const test = new Tree(randomArray());
+const test = new Tree([0, 13, 19, 30, 38, 60, 70, 78, 90, 100]); //randomArray()
+prettyPrint(test.root);
+
+test.insert(test.root, 69);
+prettyPrint(test.root);
+
+test.delete(test.root, 69);
+prettyPrint(test.root);
+
+test.insert(test.root, 65);
+prettyPrint(test.root);
+
+test.delete(test.root, 13);
 prettyPrint(test.root);

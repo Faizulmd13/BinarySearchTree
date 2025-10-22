@@ -5,6 +5,50 @@ export class Tree {
     const sortedArray = sortAndRemoveDuplicates(arr);
     this.root = buildTree(sortedArray, 0, sortedArray.length - 1);
   }
+
+  insert(root = this.root, value) {
+    if (root === null) {
+      return new Node(value);
+    }
+
+    if (value < root.data) {
+      root.left = this.insert(root.left, value);
+    } else if (value > root.data) {
+      root.right = this.insert(root.right, value);
+    }
+    return root;
+  }
+
+  delete(root = this.root, value) {
+    function findSuccessor(node) {
+      let current = node.right;
+      while (current !== null && current.left !== null) current = current.left;
+      return current;
+    }
+
+    if (root === null) {
+      return root;
+    }
+
+    if (root.data > value) {
+      root.left = this.delete(root.left, value);
+    } else if (root.data < value) {
+      root.right = this.delete(root.right, value);
+    } else {
+      if (root.left === null) {
+        return root.right;
+      }
+      if (root.right === null) {
+        return root.left;
+      }
+
+      const successor = findSuccessor(root);
+      root.data = successor.data;
+      root.right = this.delete(root.right, successor.data);
+    }
+
+    return root;
+  }
 }
 
 function sortAndRemoveDuplicates(arr) {
