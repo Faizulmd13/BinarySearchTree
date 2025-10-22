@@ -49,6 +49,89 @@ export class Tree {
 
     return root;
   }
+
+  levelOrderForEach(callback) {
+    try {
+      if (!callback) throw new Error("callback is required");
+
+      const queue = [this.root];
+
+      const traverse = () => {
+        if (queue.length === 0) return;
+
+        const current = queue.shift();
+
+        if (current.left) queue.push(current.left);
+        if (current.right) queue.push(current.right);
+
+        callback(current);
+
+        traverse();
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  find(root = this.root, value) {
+    if (root === null) {
+      return "value not found";
+    }
+
+    if (root.data === value) {
+      return root;
+    } else if (root.data < value) {
+      return this.find(root.right, value);
+    } else if (root.data > value) {
+      return this.find(root.left, value);
+    }
+  }
+
+  height(root = this.root) {
+    if (root === null) {
+      return null;
+    }
+
+    if (root.left === null && root.right === null) {
+      return 0;
+    }
+
+    const leftHeight = this.height(root.left);
+    const rightHeight = this.height(root.right);
+
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  depth(value) {
+    const target = this.find(root, value);
+    if (target === "value not found") {
+      return null;
+    }
+
+    const recursiveStep = (current, depth = 0) => {
+      if (!current) {
+        return null;
+      }
+
+      if (current === target) {
+        return depth;
+      }
+
+      const left = recursiveStep(current.left, depth + 1);
+      if (left !== null) {
+        return left;
+      }
+
+      const right = recursiveStep(current.right, depth + 1);
+      if (right !== null) {
+        return right;
+      }
+
+      return null;
+    };
+
+    return recursiveStep(this.root);
+  }
 }
 
 function sortAndRemoveDuplicates(arr) {
